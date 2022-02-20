@@ -38,15 +38,21 @@ router.get('/:id/edit', wrapAsync(async(req,res)=>{
 router.put('/:id', validateCampground,  wrapAsync(async(req,res)=>{
     const {id} = req.params;
     const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground});
+    req.flash('success', 'Successfully updated campground!')
     res.redirect(`/campgrounds/${campground.id}`);
 }))
 router.get('/:id', wrapAsync(async(req,res)=>{
     const campground = await Campground.findById(req.params.id).populate('reviews');
+    if(!campground){
+        req.flash('error', 'Cannot find that campground!')
+        return res.redirect('/campgrounds')
+    }
     res.render('campgrounds/showcamp', {campground})
 }))
 router.delete('/:id', wrapAsync(async(req,res)=>{
     const {id} = req.params;
     await Campground.findByIdAndDelete(id);
+    req.flash('success', 'You deleted campground!')
     res.redirect('/campgrounds')
 }))
 
