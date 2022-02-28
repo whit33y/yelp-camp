@@ -5,7 +5,6 @@ const ExpressError = require("../utils/ExpressError");
 const Campground = require('../models/campground');
 const {campgroundSchema} = require('../schemas.js') //destrukturyzacja validowych schematów campground i review
 
-
 const validateCampground = (req,res,next) =>{
     const {error} = campgroundSchema.validate(req.body)
     if(error){
