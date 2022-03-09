@@ -8,12 +8,15 @@ const {campgroundSchema, reviewSchema} = require('./schemas.js') //destrukturyza
 const wrapAsync = require('./utils/wrapAsync');
 const ExpressError = require("./utils/ExpressError");
 const session = require('express-session')
-const campgrounds = require('./routes/campground');
-const reviews = require('./routes/review');
+const campgroundRoutes = require('./routes/campground');
+const reviewsRoutes = require('./routes/review');
+const userRoutes = require('./routes/users')
 const flash = require('connect-flash');
 const passport = require('passport')
 const passportLocal = require('passport-local')
 const User = require('./models/user')
+
+
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp');
 const db = mongoose.connection;
@@ -63,8 +66,9 @@ app.use((req,res,next)=>{
 //   res.send(newUser)
 // })
 
-app.use('/campgrounds', campgrounds)
-app.use('/campgrounds/:id/reviews', reviews)
+app.use('/campgrounds', campgroundRoutes)
+app.use('/campgrounds/:id/reviews', reviewsRoutes)
+app.use('/', userRoutes)
 
 app.get("/", (req,res)=>{
     res.render('home');
