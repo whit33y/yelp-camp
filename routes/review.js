@@ -8,17 +8,9 @@ const Review = require("../models/review");
 const Campground = require("../models/campground")
 
 const {reviewSchema} = require('../schemas.js')
+const {validateReview} = require('../middleware')
 
 
-const validateReview = (req,res,next) =>{
-    const {error} = reviewSchema.validate(req.body)
-    if(error){
-        const message = error.details.map(el=>el.message).join(',')
-        throw new ExpressError(message, 404)
-    }else{
-        next()
-    }
-}
 
 router.post('/',validateReview, wrapAsync(async(req,res)=>{
     const {id} = req.params;
