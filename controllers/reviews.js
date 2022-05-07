@@ -1,4 +1,6 @@
 const Review = require("../models/review");
+const Campground = require('../models/campground');
+
 
 module.exports.createReview = async(req,res)=>{
     const {id} = req.params;
