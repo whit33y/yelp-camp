@@ -5,15 +5,15 @@ const User = require('../models/user');
 const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport')
 const passportLocal = require('passport-local')
-const users = require('../controllers/users')
+const users = require('../controllers/users');
 
-router.get('/register', users.renderRegisterForm)
+router.route('/register')
+    .get(users.renderRegisterForm)
+    .post(wrapAsync(users.authorizeRegister))
 
-router.post('/register', wrapAsync(users.authorizeRegister))
-
-router.get('/login', users.renderLoginForm)
-
-router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), users.login)
+router.route('/login')
+    .get(users.renderLoginForm)
+    .post(passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), users.login)
 
 router.get('/logout', users.logout)
 
